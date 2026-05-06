@@ -50,6 +50,10 @@
 
 ![图片加载失败](imgs/4.png)
 
+## 切换到Actions启用自动执行功能
+切换到Actions页卡，默认auto check后面会是disable（如果不是可忽略这一步），点击auto check，启用
+<img width="1561" height="649" alt="image" src="https://github.com/user-attachments/assets/88dddbb6-d23d-4720-8261-f4a0dcf1e518" />
+
 ## 文件结构
 
 ```shell
@@ -61,6 +65,7 @@
 ```
 
 ### 切换到Actions启用自动执行功能
+切换到Actions页卡，默认auto check后面会是disable（如果不是可忽略这一步），点击auto check，启用
 <img width="1561" height="649" alt="image" src="https://github.com/user-attachments/assets/88dddbb6-d23d-4720-8261-f4a0dcf1e518" />
 
 
