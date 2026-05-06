@@ -60,6 +60,10 @@
 │          gladosCheck.yml	# Actions 配置文件
 ```
 
+### 切换到Actions启用自动执行功能
+<img width="1561" height="649" alt="image" src="https://github.com/user-attachments/assets/88dddbb6-d23d-4720-8261-f4a0dcf1e518" />
+
+
 ## 更新日志
 
 - **2026-01**: 重构代码，添加log输出方便定位，支持新版网址，支持配置积分兑换策略。
