@@ -477,15 +477,38 @@ class Checker:
             points_str, points_num = api.get_points(cookie)
             result.points_total = points_str
 
-            # 4. 执行兑换
+            # 4. 执行兑换：积分不足时不调用兑换接口
             required_points = self.config.EXCHANGE_PLANS.get(self.config.exchange_plan, 500)
-            self._log(
-                cookie_idx,
-                domain,
-                LogEmoji.EXCHANGE,
-                f"开始兑换 {self.config.exchange_plan} (需要 {required_points} 积分)",
-            )
-            result.exchange = api.exchange(cookie, self.config.exchange_plan, required_points)
+
+            if points_str == "None 积分":
+                result.exchange = "未兑换: 积分查询失败"
+                self._log(
+                    cookie_idx,
+                    domain,
+                    LogEmoji.WARNING,
+                    "积分查询失败，跳过兑换",
+                    force=True,
+                )
+
+            elif points_num < required_points:
+                result.exchange = f"未兑换: 积分不足，需{required_points}积分"
+                self._log(
+                    cookie_idx,
+                    domain,
+                    LogEmoji.WARNING,
+                    f"当前积分 {points_num}，不足 {required_points}，跳过兑换",
+                    force=True,
+                )
+
+            else:
+                self._log(
+                    cookie_idx,
+                    domain,
+                    LogEmoji.EXCHANGE,
+                    f"开始兑换 {self.config.exchange_plan} (需要 {required_points} 积分)",
+                    force=True,
+                )
+                result.exchange = api.exchange(cookie, self.config.exchange_plan, required_points)
 
         return result
 
