@@ -232,26 +232,31 @@ class API:
         return f"https://{self.domain}{path}"
 
     def _make_request(self, url: str, method: str, data: Optional[Dict] = None, cookies: str = "") -> Optional[requests.Response]:
-        """发送 HTTP 请求"""
-        session_headers = self.headers.copy()
-        session_headers["cookie"] = cookies
+    session_headers = self.headers.copy()
+    session_headers["cookie"] = cookies
+    session_headers["content-type"] = "application/json;charset=UTF-8"
 
-        try:
-            if method.upper() == "POST":
-                response = self.session.post(url, headers=session_headers, data=json.dumps(data), timeout=(60, 120))
-            elif method.upper() == "GET":
-                response = self.session.get(url, headers=session_headers, timeout=(60, 120))
-            else:
-                self._log("error", LogEmoji.ERROR, f"不支持的 HTTP 方法: {method}", force=True)
-                return None
-
-            if not response.ok:
-                self._log("warning", LogEmoji.WARNING, f"向 {url} 发起的请求失败，状态码 {response.status_code}。响应内容: {response.text}", force=True)
-                return None
-            return response
-        except requests.exceptions.RequestException as e:
-            self._log("error", LogEmoji.ERROR, f"向 {url} 发起请求时发生网络错误: {e}", force=True)
+    try:
+        if method.upper() == "POST":
+            response = self.session.post(
+                url,
+                headers=session_headers,
+                json=data,
+                timeout=(60, 120)
+            )
+        elif method.upper() == "GET":
+            response = self.session.get(url, headers=session_headers, timeout=(60, 120))
+        else:
+            self._log("error", LogEmoji.ERROR, f"不支持的 HTTP 方法: {method}", force=True)
             return None
+
+        if not response.ok:
+            self._log("warning", LogEmoji.WARNING, f"向 {url} 发起的请求失败，状态码 {response.status_code}。响应内容: {response.text}", force=True)
+            return None
+        return response
+    except requests.exceptions.RequestException as e:
+        self._log("error", LogEmoji.ERROR, f"向 {url} 发起请求时发生网络错误: {e}", force=True)
+        return None
 
     def _get_checkin_data(self) -> Dict[str, str]:
         """获取签到数据"""
